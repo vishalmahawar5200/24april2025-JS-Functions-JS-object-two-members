@@ -45,8 +45,9 @@ pipeline {
             steps{
                 script{
                     withCredentials([usernamePassword(crudentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                        def imageTag = "v$(env.BUILD_NUMBER)"
+                       def imageTag = "v${env.BUILD_NUMBER}"
                         sh "docker tag vishal:t1 $DOCKER_IMAGE:${imageTag}"
+                        sh "echo $PASS | docker login -u $USER --password-stdin"
                         sh "docker push $DOCKER_IMAGE:${imageTag}"   
                     }
                 }
