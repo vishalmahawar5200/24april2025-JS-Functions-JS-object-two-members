@@ -1,4 +1,4 @@
-FROM ubuntu:lts
+FROM ubuntu:22.04
 
 RUN apt update && apt upgrade -y && apt-get install apache2 -y
 
