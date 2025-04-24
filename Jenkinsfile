@@ -11,7 +11,7 @@ pipeline {
         stage('Docker Install Dependencies') {
             steps {
                 sh '''
-                    apt update 
+                    apt update  
                     apt install -y docker.io sudo
                 '''
             }
@@ -59,14 +59,16 @@ pipeline {
         }
         stage('Deploy to Go Server'){
             steps{
-                sshagent (crudentials: ['ID_RSA']) {
+                sshagent (credentials: ['ID_RSA']) {
+
                     script{
-                        def imageTag = "v$(env.BUILD_NUMBER)"
+                       def imageTag = "v${env.BUILD_NUMBER}"
                         sh """
                             ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST'
                             echo "Connected to Go Server...";
                             pwd;
                             hostname -I;
+                            '
                         """
                     }
                 }
