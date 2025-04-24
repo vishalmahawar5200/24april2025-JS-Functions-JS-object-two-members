@@ -9,10 +9,10 @@ pipeline {
                 '''
             }  
         }
-        stage('Start Docker Daemon (if not running)'){
-            steps{
+      stage('Start Docker Daemon (if not running)') {
+            steps {
                 sh '''
-                    if ! dockerd >dev/null;then
+                    if ! pgrep dockerd > /dev/null; then
                         echo "Starting Docker daemon..."
                         nohup dockerd > /tmp/dockerd.log 2>&1 &
                         sleep 10
