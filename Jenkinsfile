@@ -1,5 +1,10 @@
 pipeline {
     agent any 
+
+    environment{
+        DOCKER_IMAGE = "vishalmahawar5200/24april2025"
+    }
+
     stages {
         stage('Docker Install Dependencies') {
             steps {
@@ -47,6 +52,6 @@ pipeline {
                 }
             }
         }
-        
+
     } 
 } 
