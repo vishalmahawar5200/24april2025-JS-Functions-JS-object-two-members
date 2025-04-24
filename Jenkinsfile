@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "vishalmahawar5200/24april2025"
+        DEPLOY_USER = "root"
+        DEPLOY_HOST = "65.108.149.166"
     }
 
     stages {
@@ -51,6 +53,21 @@ pipeline {
                         def imageTag = "v${env.BUILD_NUMBER}"
                         sh "docker tag vishal:t1 $DOCKER_IMAGE:${imageTag}"
                         sh "docker push $DOCKER_IMAGE:${imageTag}"
+                    }
+                }
+            }
+        }
+        stage('Deploy to Go Server'){
+            steps{
+                sshagent (crudentials: ['ID_RSA']) {
+                    script{
+                        def imageTag = "v$(env.BUILD_NUMBER)"
+                        sh """
+                            ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST'
+                            echo "Connected to Go Server...";
+                            pwd;
+                            hostname -I;
+                        """
                     }
                 }
             }
