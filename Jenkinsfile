@@ -1,15 +1,15 @@
 pipeline {
     agent any 
-    stages{
-        stage('Docker Install Dependencies'){
-            steps{
+    stages {
+        stage('Docker Install Dependencies') {
+            steps {
                 sh '''
                     apt update 
                     apt install -y docker.io sudo
                 '''
-            }  
+            }
         }
-      stage('Start Docker Daemon (if not running)') {
+        stage('Start Docker Daemon (if not running)') {
             steps {
                 sh '''
                     if ! pgrep dockerd > /dev/null; then
@@ -22,17 +22,18 @@ pipeline {
                 '''
             }
         }
-        stage('Verify Docker Version'){
-            steps{
+        stage('Verify Docker Version') {
+            steps {
                 sh "docker --version"
             }
         }
-        stage('Build Image'){
-            steps{
+        stage('Build Image') {
+            steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                sh 'docker build -t vishal:t1 .'
-                sh "echo $PASS | docker login -u $USER --password-stdin" 
+                    sh 'docker build -t vishal:t1 .'
+                    sh "echo $PASS | docker login -u $USER --password-stdin"
+                }
             }
         }
-    }
-}
+    } 
+} 
