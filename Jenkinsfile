@@ -64,7 +64,7 @@ pipeline {
                     script{
                        def imageTag = "v${env.BUILD_NUMBER}"
                         sh """
-                            ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST << EOF 
+                            ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST << 'EOF' 
                             echo "Connected to Go Server...";
                             pwd;
                             hostname -I;
