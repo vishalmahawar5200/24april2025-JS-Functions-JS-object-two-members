@@ -1,7 +1,7 @@
 pipeline {
     agent any 
 
-    environment{
+    environment {
         DOCKER_IMAGE = "vishalmahawar5200/24april2025"
     }
 
@@ -14,6 +14,7 @@ pipeline {
                 '''
             }
         }
+
         stage('Start Docker Daemon (if not running)') {
             steps {
                 sh '''
@@ -27,32 +28,32 @@ pipeline {
                 '''
             }
         }
-        //1. Function defination is one time process
-        stage('Verify Docker Version') { //'Verify Docker Version' formal argument
+
+        stage('Verify Docker Version') {
             steps {
                 sh "docker --version"
             }
         }
+
         stage('Build Image') {
-            steps{
+            steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh 'docker build -t vishal:t1 .'
-                    sh "echo $PASS | docker login -u $USER --password-stdin"
-                }
-            }
-        }
-        stage('Push Docker Image'){
-            steps{
-                script{
-                    withCredentials([usernamePassword(crudentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                       def imageTag = "v${env.BUILD_NUMBER}"
-                        sh "docker tag vishal:t1 $DOCKER_IMAGE:${imageTag}"
-                        sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh "docker push $DOCKER_IMAGE:${imageTag}"   
-                    }
+                    sh 'echo $PASS | docker login -u $USER --password-stdin'
                 }
             }
         }
 
-    } 
-} 
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                        def imageTag = "v${env.BUILD_NUMBER}"
+                        sh "docker tag vishal:t1 $DOCKER_IMAGE:${imageTag}"
+                        sh "docker push $DOCKER_IMAGE:${imageTag}"
+                    }
+                }
+            }
+        }
+    }
+}
