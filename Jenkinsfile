@@ -22,13 +22,14 @@ pipeline {
                 '''
             }
         }
-        stage('Verify Docker Version') {
+        //1. Function defination is one time process
+        stage('Verify Docker Version') { //'Verify Docker Version' formal argument
             steps {
                 sh "docker --version"
             }
         }
         stage('Build Image') {
-            steps {
+            steps{
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh 'docker build -t vishal:t1 .'
                     sh "echo $PASS | docker login -u $USER --password-stdin"
