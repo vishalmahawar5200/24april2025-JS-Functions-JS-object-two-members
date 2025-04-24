@@ -2,13 +2,18 @@ pipeline {
     agent any 
     stages{
         stage('Docker Install Dependencies'){
-            sh '''
-                apt update 
-                apt install -y docker.io sudo
-            '''
+            steps{
+                sh '''
+                    apt update 
+                    apt install -y docker.io sudo
+                '''
+            }  
         }
         stage('Verify Docker Version'){
-            sh "docker --version"
+            steps{
+                sh "docker --version"
+            }
+            
         }
     }
 }
