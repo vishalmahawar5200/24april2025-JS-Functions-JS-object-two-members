@@ -36,5 +36,17 @@ pipeline {
                 }
             }
         }
+        stage('Push Docker Image'){
+            steps{
+                script{
+                    withCredentials([usernamePassword(crudentialsId: 'docker-hub-repo', passwordVariable: 'PASS', usernameVariable: 'USER')]){
+                        def imageTag = "v$(env.BUILD_NUMBER)"
+                        sh "docker tag vishal:t1 $DOCKER_IMAGE:${imageTag}"
+                        sh "docker push $DOCKER_IMAGE:${imageTag}"   
+                    }
+                }
+            }
+        }
+        
     } 
 } 
