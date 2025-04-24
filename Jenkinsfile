@@ -18,6 +18,7 @@ pipeline {
                         sleep 10
                     else
                         echo "Docker daemon is already running"
+                    fi
                 '''
             }
         }
